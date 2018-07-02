@@ -1,6 +1,19 @@
-import express from 'express'
-const app = express()
+import express from 'express';
+import bodyParser from 'body-parser';
+import api from './api';
+import config from './config.json';
 
-app.get('/', (req, res) => res.send('Hello World!'))
+const app = express();
 
-app.listen(3000, () => console.log('Example app listening on port 3000!'))
+// 3rd party middleware
+
+app.use(bodyParser.json({
+	limit : config.bodyLimit
+}));
+
+// api routes
+app.use('/api', api({}))
+
+app.listen(process.env.PORT || 3000, () => 
+    console.log(`Example app listening`)
+)
